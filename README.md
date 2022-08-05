@@ -12,7 +12,11 @@ TO RUN:
 
 CREDITS:
 ItsAnOmen2 - sole and lead developer
+
 Castlemore & who_though - writing assistance as commented
 
+
+
 LICENCE:
+
 This project uses GNU General Public License v3, which is a free and copyleft license for software and other kinds of works.
