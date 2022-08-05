@@ -1,0 +1,24 @@
+[
+  {
+    "id": 0,
+    "name": "Philip of Valois",
+    "gender": "Male",
+    "bornYear": "1293",
+    "person": "Lucky",
+    "desc": "",
+    "alive": 1,
+    "img": null,
+    "deathYear": 0,
+    "obituary": "",
+    "children": [],
+    "fertility": 25,
+    "preset": 1,
+    "approval": 0,
+    "dice": "+2",
+    "embed": "815971080480620545",
+    "channel": "992456536825798686",
+    "url": "https://discord.com/channels/815971080480620545/992456536825798686/997941937229275176",
+    "legacy": true,
+    "author": "70799821711500909"
+  }
+]

@@ -1,0 +1,18 @@
+{
+	"prefix":".c ",
+	"seperator":"/",
+	"birth":"",
+	"death":"",
+	"range":20,
+	"dices":[
+		{"odds":0.96,"bonus":"+4"},
+		{"odds":0.92,"bonus":"+3"},
+		{"odds":0.75,"bonus":"+2"},
+		{"odds":0.5,"bonus":"+1"},
+		{"odds":0,"bonus":"+0"}
+	],
+	"birthOdds":0.25,
+	"motherOdds":0.2,
+	"conceptionOdds":0.33,
+	"fertilityRange":10
+}
