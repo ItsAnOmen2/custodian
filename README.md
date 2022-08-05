@@ -12,7 +12,7 @@ TO RUN:
 
 CREDITS:
 
-ItsAnOmen2 - sole and lead developer
+ItsAnOmen2 - sole & lead developer and project manager
 
 Castlemore & who_though - writing assistance as commented
 
