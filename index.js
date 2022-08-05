@@ -8,7 +8,7 @@ const fs=require("fs")
 const {Client,Intents}=require('discord.js')
 const client=new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGE_TYPING"], partials: ['CHANNEL',] })
 const { Collection }=require('discord.js')
-let config=JSON.parse(fs.readFileSync("config.json","utf8"))
+let config=JSON.parse(fs.readFileSync("config.json","utf8")) //all files are read sync-ly and not async-ly because jsons will wipe when simultaneously being read from and written to
 let data=JSON.parse(fs.readFileSync("data.json","utf8"))
 let secret=JSON.parse(fs.readFileSync("secret.json","utf8"))
 
