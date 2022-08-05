@@ -11,7 +11,6 @@ const { Collection }=require('discord.js')
 let config=JSON.parse(fs.readFileSync("./data/config.json","utf8"))
 let data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 let secret=JSON.parse(fs.readFileSync("./data/secret.json","utf8"))
-
 //functions for generating embeds
 //returns a red embed saying error
 const errorMessage=((desc)=>{
@@ -40,7 +39,7 @@ const successMessage=((desc,url)=>{
 })
 //prints a character's profile
 const profileMessage=((character)=>{
-	data=JSON.parse(fs.readFileSync("data.json","utf8"))
+	data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 	//embed starts off with all mandatory information that any character has
 	let embed={
 		title:`__${character.name}__ (b. ${character.bornYear} AD)`,
@@ -199,7 +198,7 @@ const profileMessage=((character)=>{
 
 //returns character corresponding to requested ID if requested ID is valid
 const sanitise=((idInput)=>{
-	data=JSON.parse(fs.readFileSync("data.json","utf8"))
+	data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 	return /^\d+$/.test(idInput)?data.find(e=>e.id==idInput):undefined // if the user's input are all numbers, then return the requested character (will return undefined if it cannot be found), else return undefined
 })
 //returns boolean reflecting whether a year is valid or not
@@ -298,7 +297,7 @@ client.on('messageCreate',(async(msg)=>{
 		}
 		
 		//gets the character's father given a valid fatherId
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		let fatherCharacter=undefined //the fatherCharacter variable is defined beforehand as we perform comparisons on it later, irrespective of whether there's an actual fatherCharacter or not
 		if(!!fatherId){
 			let fatherIndex=data.findIndex(e=>e.id==fatherId)
@@ -350,18 +349,15 @@ client.on('messageCreate',(async(msg)=>{
 			//adds the character to the database and to the list of fatherCharacter's children, and updates the fatherCharacter
 			data.push(character)
 			if(fatherCharacter!=undefined){
-				data[fatherIndex].children.push(character.id)
 				fatherCharacter.children.push(character.id)
 				data[fatherIndex]=fatherCharacter
-			}
-			fs.writeFileSync("data.json",JSON.stringify(data,null,2))
-			if(fatherCharacter!=undefined){ //this oddity exists as data.json must be written to immediately after changes to fatherCharacter have been made, else profileMessage will not reflect fatherCharacter's children
 				await client.channels.fetch(config.birth).then(channel=>{
 					channel.messages.fetch(fatherCharacter.embed).then(message=>{
 						message.edit(profileMessage(fatherCharacter))
 					})
 				})
 			}
+			fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 		}).then(()=>{
 			return msg.reply(successMessage(`It's a ${character.gender=="Male"?"boy":"girl"}! \`${character.name}\` has been created successfully.`,character.url))
 		}).catch((err)=>msg.reply(errorMessage(err)))
@@ -375,7 +371,7 @@ client.on('messageCreate',(async(msg)=>{
 		if(args.length<1){
 			return msg.reply(`Please input a list of character IDs that you want to approve, with each ID seperated by a space.`)
 		}
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		//goes through the entire list of characters to approve
 		return args.forEach(async(e)=>{
 			let character=await sanitise(e)
@@ -391,7 +387,7 @@ client.on('messageCreate',(async(msg)=>{
 			
 			character.approval=msg.author.id
 			data[data.findIndex(f=>f.id==e)]=character
-			fs.writeFileSync("data.json",JSON.stringify(data,null,2))
+			fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 			
 			client.channels.fetch(character.channel).then(channel=>{
 				channel.messages.fetch(character.embed).then(message=>{
@@ -416,7 +412,7 @@ client.on('messageCreate',(async(msg)=>{
 		if(!validYear(bornYear)){
 			return msg.reply(errorMessage(`Invalid birth year: \`${bornYear}\` must be a valid year.`))
 		}
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		const father=data.findIndex(e=>e.id==fatherId)
 		if(father==-1){
 			return msg.reply(errorMessage(`Father not found: \`${fatherId}\` does not correspond to any known character IDs.`))
@@ -459,7 +455,7 @@ client.on('messageCreate',(async(msg)=>{
 		character.gender=Math.round(Math.random())?"Male":"Female"
 		character.name=(character.gender=="Male"?maleName:femaleName)
 		character.mil=(character.gender=="Female"?Math.round(character.mil*=0.8):character.mil)
-		//defines character bonuses as set in config.json
+		//defines character bonuses as set in ./data/config.json
 		character.dice=config.dices.find(e=>Math.round(e.odds*config.range)<=character.mil&&Math.round(e.odds*config.range)<=character.intel).bonus
 		
 		//generates three random numbers to determine chances of conception, mother dying and child dying
@@ -502,7 +498,7 @@ client.on('messageCreate',(async(msg)=>{
 			data.push(character)
 			fatherCharacter.children.push(character.id)
 			data[father]=fatherCharacter
-			fs.writeFileSync("data.json",JSON.stringify(data,null,2))
+			fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 			if(character.alive){
 				msg.reply(successMessage(`It's a ${character.gender=="Male"?"boy":"girl"}! \`${character.name}\` has been generated successfully.`,character.url))
 			}
@@ -543,7 +539,7 @@ client.on('messageCreate',(async(msg)=>{
 		if(!validYear(deathYear)){
 			return msg.reply(errorMessage(`Invalid death year: \`${deathYear}\` must be a number.`))
 		}
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		if(parseInt(msg.author.id)!=parseInt(character.author)){
 			return msg.reply(errorMessage(`Insufficient permissions: only this character's author <@${character.author}> may run this command.`))
 		}
@@ -552,7 +548,7 @@ client.on('messageCreate',(async(msg)=>{
 		character.alive=0
 		character.deathYear=deathYear
 		data[data.findIndex(e=>e.id==id)]=character
-		fs.writeFileSync("data.json",JSON.stringify(data,null,2))
+		fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 		
 		return client.channels.fetch(character.channel).then((channel)=>{
 			channel.messages.fetch(character.embed).then(message=>{
@@ -594,9 +590,9 @@ client.on('messageCreate',(async(msg)=>{
 		
 		character.desc=args.join(" ")
 		
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		data[data.findIndex(e=>e.id==id)]=character
-		fs.writeFileSync("data.json",JSON.stringify(data,null,2))
+		fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 		return client.channels.fetch(character.channel).then(channel=>{
 			channel.messages.fetch(character.embed).then(message=>{
 				message.edit(profileMessage(character))
@@ -624,9 +620,9 @@ client.on('messageCreate',(async(msg)=>{
 		if(!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g).test(character.img)){
 			return msg.reply(errorMessage(`Invalid URL: \`${character.img}\` must be a valid URL to your requested image.`))
 		}
-		data=JSON.parse(fs.readFileSync("data.json","utf8"))
+		data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
 		data[data.findIndex(e=>e.id==id)]=character
-		fs.writeFileSync("data.json",JSON.stringify(data,null,2))
+		fs.writeFileSync("./data/data.json",JSON.stringify(data,null,2))
 		return client.channels.fetch(character.channel).then(channel=>{
 			channel.messages.fetch(character.embed).then((message)=>{
 				message.edit(profileMessage(character)).then(()=>{
