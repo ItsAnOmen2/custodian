@@ -8,9 +8,9 @@ const fs=require("fs")
 const {Client,Intents}=require('discord.js')
 const client=new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGE_TYPING"], partials: ['CHANNEL',] })
 const { Collection }=require('discord.js')
-let config=JSON.parse(fs.readFileSync("config.json","utf8"))
-let data=JSON.parse(fs.readFileSync("data.json","utf8"))
-let secret=JSON.parse(fs.readFileSync("secret.json","utf8"))
+let config=JSON.parse(fs.readFileSync("./data/config.json","utf8"))
+let data=JSON.parse(fs.readFileSync("./data/data.json","utf8"))
+let secret=JSON.parse(fs.readFileSync("./data/secret.json","utf8"))
 
 //functions for generating embeds
 //returns a red embed saying error
