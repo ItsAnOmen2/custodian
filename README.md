@@ -8,7 +8,7 @@ TO INSTALL:
 4) Fill in the required information in config.json and secret.json
 
 TO RUN:
-1) Run the bot using the cmd command "node index.js"
+1) Run the bot using the cmd command "node index.js" in the directory where the bot is
 
 CREDITS:
 ItsAnOmen2 - sole and lead developer
