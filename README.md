@@ -11,6 +11,7 @@ TO RUN:
 1) Run the bot using the cmd command "node index.js" in the directory where the bot is
 
 CREDITS:
+
 ItsAnOmen2 - sole and lead developer
 
 Castlemore & who_though - writing assistance as commented
