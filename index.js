@@ -212,6 +212,7 @@ const tendencies = ['Bawdy','Generous','Materialist','Pious','Cruel','Humble','E
 const deaths=['died from the flu', 'was stillborn', 'lived for only half a year', 'died from measles', 'died from a cold', 'died from a fever', 'died from chickenpox']
 
 client.on('ready',()=>{
+	client.user.setActivity(`over ${data.length} characters`, { type: "WATCHING"})
 	//acknowledges that the bot has started
 	console.log("Bot is ready")
 })
@@ -222,6 +223,9 @@ client.on('messageCreate',(async(msg)=>{
 		return msg.reply(errorMessage("This bot does not accept direct messages."))
 	}
 	if(!msg.content.startsWith(config.prefix)) return // rejects any message that doesn't start with the required prefix
+	
+	//if the bot is interacted with, update it's status
+	client.user.setActivity(`over ${data.length} characters`, { type: "WATCHING"})
 	
 	//splits command into the actual command (command) and the command's arguments (args)
 	const req=msg.content.split(config.prefix)[1].split(" ")
